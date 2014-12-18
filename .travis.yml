@@ -1,1 +1,8 @@
 language: clojure
+deploy:
+  provider: heroku
+  api_key:
+    secure: Z16lZ6OuQy9WCEOahcBXjZzqL/Ub7B1OC8u0i3EgwSGqn7m1mPeMBQNMRmStxt5Ow5UChXGUZeQAr6MvsbH7TAt59aVF+mFJ4XR1eKZktUFDQ/iqiEns1G5nHOMoC5ozP0PhmwvqGcuMgpYIe8oJ7u0PawKZTYF2f4mO9uib3Jk=
+  app: cljspike
+  on:
+    repo: bnadlerjr/cljspike
