@@ -17,4 +17,5 @@
   :main webdev.core
 
   :profiles {:dev
-             {:main webdev.core/-dev-main}})
+             {:main webdev.core/-dev-main
+              :dependencies [[ring/ring-mock "0.2.0"]]}})
