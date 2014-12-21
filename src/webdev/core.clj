@@ -1,5 +1,5 @@
 (ns webdev.core
-  (:require [webdev.model :as model])
+  (:require [webdev.item.model :as model])
   (:require [ring.adapter.jetty :as jetty]
             [ring.middleware.reload :refer [wrap-reload]]
             [ring.middleware.params :refer [wrap-params]]
