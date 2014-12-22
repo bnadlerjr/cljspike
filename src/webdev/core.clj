@@ -1,5 +1,6 @@
 (ns webdev.core
-  (:require [webdev.item.model :as model])
+  (:require [webdev.item.model :as model]
+            [webdev.item.handler :refer [handle-index-items handle-create-item]])
   (:require [ring.adapter.jetty :as jetty]
             [ring.middleware.reload :refer [wrap-reload]]
             [ring.middleware.params :refer [wrap-params]]
@@ -18,6 +19,8 @@
 (defroutes routes
   (GET "/" [] greet)
   (GET "/goodbye" [] goodbye)
+  (GET "/items" [] handle-index-items)
+  (POST "/items" [] handle-create-item)
   (ANY "/request" [] handle-dump)
   (not-found "Page not found."))
 
