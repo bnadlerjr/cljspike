@@ -13,7 +13,9 @@
             [compojure.core :refer [defroutes ANY GET POST PUT DELETE]]
             [compojure.route :refer [not-found]]))
 
-(def db "jdbc:postgresql://localhost/webdev")
+(def db (or
+          (System/getenv "DATABASE_URL")
+          "jdbc:postgresql://localhost/webdev"))
 
 (defn greet [req]
   {:status 200 :body "Hello, world! Now with reloading!" :headers {}})
