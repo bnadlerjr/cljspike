@@ -17,15 +17,7 @@
           (System/getenv "DATABASE_URL")
           "jdbc:postgresql://localhost/webdev"))
 
-(defn greet [req]
-  {:status 200 :body "Hello, world! Now with reloading!" :headers {}})
-
-(defn goodbye [req]
-  {:status 200 :body "Goodbye, cruel world!" :headers {}})
-
 (defroutes routes
-  (GET "/" [] greet)
-  (GET "/goodbye" [] goodbye)
   (GET "/items" [] handle-index-items)
   (POST "/items" [] handle-create-item)
   (DELETE "/items/:item-id" [] handle-delete-item)

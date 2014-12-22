@@ -4,12 +4,10 @@
             [ring.mock.request :as mock]))
 
 (deftest routes
-  (testing "greet"
-    (let [response (app (mock/request :get "/"))]
-      (is (= 200 (:status response)))
-      (is (= "Hello, world! Now with reloading!" (:body response)))))
+  (testing "/items"
+    (let [response (app (mock/request :get "/items"))]
+      (is (= 200 (:status response)))))
 
-  (testing "goodbye"
-    (let [response (app (mock/request :get "/goodbye"))]
-      (is (= 200 (:status response)))
-      (is (= "Goodbye, cruel world!" (:body response))))))
+  (testing "not found"
+    (let [response (app (mock/request :get "/no-such-route"))]
+      (is (= 404 (:status response))))))
