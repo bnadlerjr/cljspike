@@ -4,6 +4,8 @@
   (:require [ring.adapter.jetty :as jetty]
             [ring.middleware.reload :refer [wrap-reload]]
             [ring.middleware.params :refer [wrap-params]]
+            [ring.middleware.resource :refer [wrap-resource]]
+            [ring.middleware.file-info :refer [wrap-file-info]]
             [ring.handler.dump :refer [handle-dump]]
             [compojure.core :refer [defroutes ANY GET POST PUT DELETE]]
             [compojure.route :refer [not-found]]))
@@ -33,7 +35,9 @@
     (assoc-in (hdlr req) [:headers "Server"] "Webdev Spike")))
 
 (def app
-  (wrap-server (wrap-db (wrap-params routes))))
+  (wrap-server
+    (wrap-file-info
+      (wrap-resource (wrap-db (wrap-params routes)) "static"))))
 
 (defn -main [port]
   (model/create-table db)
