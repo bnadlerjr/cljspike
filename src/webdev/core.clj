@@ -3,6 +3,7 @@
   (:require [ring.adapter.jetty :as jetty]
             [ring.middleware.reload :refer [wrap-reload]]
             [ring.middleware.params :refer [wrap-params]]
+            [ring.handler.dump :refer [handle-dump]]
             [compojure.core :refer [defroutes ANY GET POST PUT DELETE]]
             [compojure.route :refer [not-found]]))
 
@@ -17,6 +18,7 @@
 (defroutes routes
   (GET "/" [] greet)
   (GET "/goodbye" [] goodbye)
+  (ANY "/request" [] handle-dump)
   (not-found "Page not found."))
 
 (defn wrap-db [hdlr]
