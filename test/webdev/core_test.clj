@@ -1,7 +1,14 @@
 (ns webdev.core-test
   (:require [clojure.test :refer :all]
             [webdev.core :refer [app]]
+            [webdev.item.model :as model]
             [ring.mock.request :as mock]))
+
+(defn db-fixture [f]
+  (model/create-table "jdbc:postgresql://localhost/webdev")
+  (f))
+
+(use-fixtures :once db-fixture)
 
 (deftest routes
   (testing "/items"
