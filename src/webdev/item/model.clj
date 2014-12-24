@@ -1,11 +1,12 @@
 (ns webdev.item.model
-  (:require [clojure.java.jdbc :as db]))
+  (:require [clojure.java.jdbc :as jdbc]
+            [java-jdbc.sql :as sql]))
 
 (defn create-table [db]
-  (db/execute!
+  (jdbc/execute!
     db
     ["CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\""])
-  (db/execute!
+  (jdbc/execute!
     db
     ["CREATE TABLE IF NOT EXISTS items
     (id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -15,33 +16,17 @@
     date_created TIMESTAMPTZ NOT NULL DEFAULT now())"]))
 
 (defn create-item [db name description]
-  (:id (first (db/query
-                db
-                ["INSERT INTO items (name, description)
-                  VALUES (?, ?)
-                  RETURNING id"
-                 name
-                 description]))))
+  (:id (first (jdbc/insert! db :items {:name name :description description}))))
 
 (defn update-item [db id checked]
-  (= [1] (db/execute!
-           db
-           ["UPDATE items
-             SET checked = ?
-             WHERE id = ?"
-            checked
-            id])))
+  (= [1] (jdbc/update! db :items {:checked checked} ["id = ?" id])))
 
 (defn delete-item [db id]
-  (= [1] (db/execute!
-           db
-           ["DELETE FROM items
-             WHERE id = ?"
-            id])))
+  (= [1] (jdbc/delete! db :items ["id = ?" id])))
 
 (defn read-items [db]
-  (db/query
+  (jdbc/query
     db
-    ["SELECT id, name, description, checked, date_created
-      FROM items
-      ORDER BY date_created"]))
+    (sql/select [:id :name :description :checked :date_created]
+                :items
+                (sql/order-by :date_created))))

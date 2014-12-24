@@ -10,6 +10,7 @@
                  [ring "1.3.2"]
                  [compojure "1.3.1"]
                  [org.clojure/java.jdbc "0.3.6"]
+                 [java-jdbc/dsl "0.1.1"]
                  [postgresql/postgresql "9.1-901.jdbc4"]
                  [hiccup "1.0.5"]]
 
