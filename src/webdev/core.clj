@@ -1,5 +1,5 @@
 (ns webdev.core
-  (:require [webdev.item.model :as model]
+  (:require [webdev.item.migration :as migration]
             [webdev.item.handler :refer [handle-index-items
                                          handle-create-item
                                          handle-delete-item
@@ -51,9 +51,9 @@
         "static"))))
 
 (defn -main [port]
-  (model/create-table db)
+  (migration/create-table db)
   (jetty/run-jetty app {:port (Integer. port)}))
 
 (defn -dev-main [port]
-  (model/create-table db)
+  (migration/create-table db)
   (jetty/run-jetty (wrap-reload #'app) {:port (Integer. port)}))

@@ -1,12 +1,12 @@
 (ns webdev.core-test
   (:require [clojure.test :refer :all]
             [webdev.core :refer [app]]
-            [webdev.item.model :as model]
+            [webdev.item.migration :as migration]
             [ring.mock.request :as mock]
             [environ.core :refer [env]]))
 
 (defn db-fixture [f]
-  (model/create-table (env :database-url))
+  (migration/create-table (env :database-url))
   (f))
 
 (use-fixtures :once db-fixture)

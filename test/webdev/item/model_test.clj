@@ -2,12 +2,13 @@
   (:require [clojure.test :refer :all]
             [clojure.java.jdbc :as jdbc]
             [webdev.item.model :as model]
+            [webdev.item.migration :as migration]
             [environ.core :refer [env]]))
 
 (def db (env :database-url))
 
 (defn db-fixture [f]
-  (model/create-table (env :database-url))
+  (migration/create-table (env :database-url))
   (f))
 
 (use-fixtures :once db-fixture)
