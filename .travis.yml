@@ -2,7 +2,7 @@ language: clojure
 addons:
   postgresql: "9.3"
 before_script:
-  - psql -c 'create database webdev;' -U postgres
+  - psql -c 'create database webdev_test;' -U postgres
 deploy:
   provider: heroku
   api_key:

@@ -12,7 +12,8 @@
                  [org.clojure/java.jdbc "0.3.6"]
                  [java-jdbc/dsl "0.1.1"]
                  [postgresql/postgresql "9.1-901.jdbc4"]
-                 [hiccup "1.0.5"]]
+                 [hiccup "1.0.5"]
+                 [environ "1.0.0"]]
 
   :min-lein-version "2.0.0"
 
@@ -20,6 +21,12 @@
 
   :main webdev.core
 
-  :profiles {:dev
-             {:main webdev.core/-dev-main
-              :dependencies [[ring/ring-mock "0.2.0"]]}})
+  :profiles {
+             :dev {
+                   :env {:database-url "jdbc:postgresql://localhost/webdev"}
+                   :main webdev.core/-dev-main
+                   :dependencies [[ring/ring-mock "0.2.0"]]}
+             :test {
+                    :env {:database-url "jdbc:postgresql://localhost/webdev_test"}}}
+
+  :plugins [[lein-environ "1.0.0"]])

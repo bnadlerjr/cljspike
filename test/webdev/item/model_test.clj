@@ -1,12 +1,13 @@
 (ns webdev.item.model-test
   (:require [clojure.test :refer :all]
             [clojure.java.jdbc :as jdbc]
-            [webdev.item.model :as model]))
+            [webdev.item.model :as model]
+            [environ.core :refer [env]]))
 
-(def db "jdbc:postgresql://localhost/webdev")
+(def db (env :database-url))
 
 (defn db-fixture [f]
-  (model/create-table "jdbc:postgresql://localhost/webdev")
+  (model/create-table (env :database-url))
   (f))
 
 (use-fixtures :once db-fixture)

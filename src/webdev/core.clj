@@ -11,11 +11,10 @@
             [ring.middleware.file-info :refer [wrap-file-info]]
             [ring.handler.dump :refer [handle-dump]]
             [compojure.core :refer [defroutes ANY GET POST PUT DELETE]]
-            [compojure.route :refer [not-found]]))
+            [compojure.route :refer [not-found]]
+            [environ.core :refer [env]]))
 
-(def db (or
-          (System/getenv "DATABASE_URL")
-          "jdbc:postgresql://localhost/webdev"))
+(def db (env :database-url))
 
 (defroutes routes
   (GET "/items" [] handle-index-items)

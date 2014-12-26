@@ -2,10 +2,11 @@
   (:require [clojure.test :refer :all]
             [webdev.core :refer [app]]
             [webdev.item.model :as model]
-            [ring.mock.request :as mock]))
+            [ring.mock.request :as mock]
+            [environ.core :refer [env]]))
 
 (defn db-fixture [f]
-  (model/create-table "jdbc:postgresql://localhost/webdev")
+  (model/create-table (env :database-url))
   (f))
 
 (use-fixtures :once db-fixture)
