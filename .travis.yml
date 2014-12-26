@@ -1,12 +1,19 @@
+env:
+  global:
+    - secure: Z16lZ6OuQy9WCEOahcBXjZzqL/Ub7B1OC8u0i3EgwSGqn7m1mPeMBQNMRmStxt5Ow5UChXGUZeQAr6MvsbH7TAt59aVF+mFJ4XR1eKZktUFDQ/iqiEns1G5nHOMoC5ozP0PhmwvqGcuMgpYIe8oJ7u0PawKZTYF2f4mO9uib3Jk=
 language: clojure
 addons:
   postgresql: "9.3"
 before_script:
   - psql -c 'create database webdev_test;' -U postgres
-deploy:
-  provider: heroku
-  api_key:
-    secure: Z16lZ6OuQy9WCEOahcBXjZzqL/Ub7B1OC8u0i3EgwSGqn7m1mPeMBQNMRmStxt5Ow5UChXGUZeQAr6MvsbH7TAt59aVF+mFJ4XR1eKZktUFDQ/iqiEns1G5nHOMoC5ozP0PhmwvqGcuMgpYIe8oJ7u0PawKZTYF2f4mO9uib3Jk=
-  app: cljspike
-  on:
-    repo: bnadlerjr/cljspike
+after_success:
+  - wget -qO- https://toolbelt.heroku.com/install-ubuntu.sh | sh
+  - git remote add heroku git@heroku.com:cljspike.git
+  - echo "Host heroku.com" >> ~/.ssh/config
+  - echo "   StrictHostKeyChecking no" >> ~/.ssh/config
+  - echo "   CheckHostIP no" >> ~/.ssh/config
+  - echo "   UserKnownHostsFile=/dev/null" >> ~/.ssh/config
+  - yes | heroku keys:add
+  - heroku maintenance:on
+  - yes | git push heroku master
+  - heroku maintenance:off
