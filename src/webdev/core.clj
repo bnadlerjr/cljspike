@@ -1,11 +1,11 @@
 (ns webdev.core
-  (:use [org.httpkit.server :only [run-server]])
   (:require [webdev.item.migration :as migration]
             [webdev.item.routes :refer [item-routes]]
             [webdev.common.routes :refer [common-routes]]
             [webdev.common.middleware :refer [wrap-db
                                               wrap-simulated-methods]])
-  (:require [ring.middleware.reload :refer [wrap-reload]]
+  (:require [org.httpkit.server :refer [run-server]]
+            [ring.middleware.reload :refer [wrap-reload]]
             [ring.middleware.params :refer [wrap-params]]
             [ring.middleware.resource :refer [wrap-resource]]
             [ring.middleware.file-info :refer [wrap-file-info]]
@@ -14,13 +14,18 @@
 
 (def db (env :database-url))
 
+(def app-routes
+  (routes
+    item-routes
+    common-routes))
+
 (def app
-  (wrap-file-info
-    (wrap-resource
-      (wrap-db
-        (wrap-params
-          (wrap-simulated-methods (routes item-routes common-routes))))
-      "static")))
+  (-> app-routes
+      (wrap-simulated-methods)
+      (wrap-params)
+      (wrap-db)
+      (wrap-resource "static")
+      (wrap-file-info)))
 
 (defn -main [port]
   (migration/create-table db)
