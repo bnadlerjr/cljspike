@@ -10,3 +10,8 @@ deploy:
   app: cljspike
   on:
     repo: bnadlerjr/cljspike
+after_deploy:
+  - lein ancient
+  - lein kibit
+  - lein eastwood
+  - lein bikeshed
