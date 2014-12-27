@@ -4,7 +4,9 @@
             [webdev.item.handler :refer [handle-index-items
                                          handle-create-item
                                          handle-delete-item
-                                         handle-update-item]])
+                                         handle-update-item]]
+            [webdev.common.middleware :refer [wrap-db
+                                              wrap-simulated-methods]])
   (:require [ring.middleware.reload :refer [wrap-reload]]
             [ring.middleware.params :refer [wrap-params]]
             [ring.middleware.resource :refer [wrap-resource]]
@@ -23,19 +25,6 @@
   (PUT "/items/:item-id" [] handle-update-item)
   (ANY "/request" [] handle-dump)
   (not-found "Page not found."))
-
-(defn wrap-db [hdlr]
-  (fn [req]
-    (hdlr (assoc req :webdev/db db))))
-
-(def sim-methods {"PUT" :put "DELETE" :delete})
-
-(defn wrap-simulated-methods [hdlr]
-  (fn [req]
-    (if-let [method (and (= :post (:request-method req))
-                         (sim-methods (get-in req [:params "_method"])))]
-      (hdlr (assoc req :request-method method))
-      (hdlr req))))
 
 (def app
   (wrap-file-info
