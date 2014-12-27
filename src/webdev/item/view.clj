@@ -5,7 +5,7 @@
                                  hidden-field
                                  label
                                  text-field]]
-            [webdev.common.views.layout :as layout]))
+            [webdev.common.views :refer [layout]]))
 
 (defn- update-item-form [id checked]
   (form-to [:put (str "/items/" id)]
@@ -48,7 +48,7 @@
              (submit-button {:class "btn btn-primary"} "New Item")]]))
 
 (defn items-page [items]
-  (layout/common
+  (layout
     [:div.container
      [:h1 "My Items"]
      [:div.row

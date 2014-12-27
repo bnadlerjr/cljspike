@@ -1,4 +1,4 @@
-(ns webdev.common.views.layout
+(ns webdev.common.views
   (:require [hiccup.page :refer [html5 include-css include-js]]
             [hiccup.element :refer [javascript-tag]]))
 
@@ -51,7 +51,7 @@
       version
       ".min.js\"><\\/script>')")))
 
-(defn common
+(defn layout
   "The main layout. Uses the CDN versions of jQuery and Bootstrap. If those are
   not available, fall back to local copies."
   [& body]
