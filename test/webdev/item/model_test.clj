@@ -64,10 +64,18 @@
     (jdbc/db-set-rollback-only! transaction)
     (jdbc/insert!
       transaction :items
-      {:name "Fourth" :date_created (java.sql.Timestamp/valueOf "2014-12-31 10:23:54") :description "This should be the fourth item."}
-      {:name "Third" :date_created (java.sql.Timestamp/valueOf "2014-12-25 10:23:54") :description "This should be the third item."}
-      {:name "First" :date_created (java.sql.Timestamp/valueOf "2014-12-19 10:23:54") :description "This should be the first item."}
-      {:name "Second" :date_created (java.sql.Timestamp/valueOf "2014-12-21 10:23:54") :description "This should be the second item."})
+      {:name "Fourth"
+       :date_created (java.sql.Timestamp/valueOf "2014-12-31 10:23:54")
+       :description "This should be the fourth item."}
+      {:name "Third"
+       :date_created (java.sql.Timestamp/valueOf "2014-12-25 10:23:54")
+       :description "This should be the third item."}
+      {:name "First"
+       :date_created (java.sql.Timestamp/valueOf "2014-12-19 10:23:54")
+       :description "This should be the first item."}
+      {:name "Second"
+       :date_created (java.sql.Timestamp/valueOf "2014-12-21 10:23:54")
+       :description "This should be the second item."})
 
     (testing "returns correct columns"
       (let [expected '(:date_created :checked :description :name :id)]

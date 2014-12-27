@@ -25,12 +25,23 @@
            [:div.form-group
             (label {:class "control-label col-sm-2"} "name-input" "Name")
             [:div.col-sm-10
-             (text-field {:id "name-input" :class "form-control" :placeholder "Name"} "name")]]
+             (text-field
+               {:id "name-input"
+                :class "form-control"
+                :placeholder "Name"}
+               "name")]]
 
            [:div.form-group
-            (label {:class "control-label col-sm-2"} "desc-input" "Description")
+            (label
+              {:class "control-label col-sm-2"}
+              "desc-input"
+              "Description")
             [:div.col-sm-10
-             (text-field {:id "desc-input" :class "form-control" :placeholder "Description"} "description")]]
+             (text-field
+               {:id "desc-input"
+                :class "form-control"
+                :placeholder "Description"}
+               "description")]]
 
            [:div.form-group
             [:div.col-sm-offset-2.col-sm-10
