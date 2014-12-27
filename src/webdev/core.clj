@@ -1,11 +1,11 @@
 (ns webdev.core
+  (:use [org.httpkit.server :only [run-server]])
   (:require [webdev.item.migration :as migration]
             [webdev.item.handler :refer [handle-index-items
                                          handle-create-item
                                          handle-delete-item
                                          handle-update-item]])
-  (:require [ring.adapter.jetty :as jetty]
-            [ring.middleware.reload :refer [wrap-reload]]
+  (:require [ring.middleware.reload :refer [wrap-reload]]
             [ring.middleware.params :refer [wrap-params]]
             [ring.middleware.resource :refer [wrap-resource]]
             [ring.middleware.file-info :refer [wrap-file-info]]
@@ -52,8 +52,8 @@
 
 (defn -main [port]
   (migration/create-table db)
-  (jetty/run-jetty app {:port (Integer. port)}))
+  (run-server app {:port (Integer. port)}))
 
 (defn -dev-main [port]
   (migration/create-table db)
-  (jetty/run-jetty (wrap-reload #'app) {:port (Integer. port)}))
+  (run-server (wrap-reload #'app) {:port (Integer. port)}))
