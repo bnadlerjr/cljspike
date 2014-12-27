@@ -28,10 +28,6 @@
   (fn [req]
     (hdlr (assoc req :webdev/db db))))
 
-(defn wrap-server [hdlr]
-  (fn [req]
-    (assoc-in (hdlr req) [:headers "Server"] "Webdev Spike")))
-
 (def sim-methods {"PUT" :put "DELETE" :delete})
 
 (defn wrap-simulated-methods [hdlr]
@@ -42,13 +38,12 @@
       (hdlr req))))
 
 (def app
-  (wrap-server
-    (wrap-file-info
-      (wrap-resource
-        (wrap-db
-          (wrap-params
-            (wrap-simulated-methods routes)))
-        "static"))))
+  (wrap-file-info
+    (wrap-resource
+      (wrap-db
+        (wrap-params
+          (wrap-simulated-methods routes)))
+      "static")))
 
 (defn -main [port]
   (migration/create-table db)
