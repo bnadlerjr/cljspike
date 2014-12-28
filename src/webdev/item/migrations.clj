@@ -1,4 +1,4 @@
-(ns webdev.item.migration
+(ns webdev.item.migrations
   (:require [clojure.java.jdbc :as jdbc]))
 
 (defn create-table [db]

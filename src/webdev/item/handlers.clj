@@ -1,10 +1,10 @@
-(ns webdev.item.handler
+(ns webdev.item.handlers
   (:require [ring.util.response :refer [response not-found redirect]]
-            [webdev.item.model :refer [create-item
+            [webdev.item.models :refer [create-item
                                        read-items
                                        update-item
                                        delete-item]]
-            [webdev.item.view :refer [items-page]]))
+            [webdev.item.views :refer [items-page]]))
 
 (defn handle-index-items [req]
   (let [db (:webdev/db req)

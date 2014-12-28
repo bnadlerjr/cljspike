@@ -1,5 +1,5 @@
-(ns webdev.core
-  (:require [webdev.item.migration :as migration]
+(ns webdev.app
+  (:require [webdev.item.migrations :as migration]
             [webdev.item.routes :refer [item-routes]]
             [webdev.common.routes :refer [common-routes]]
             [webdev.common.middleware :refer [wrap-db
@@ -15,12 +15,8 @@
 (def db (env :database-url))
 
 (def app-routes
-  (routes
-    item-routes
-    common-routes))
-
-(def app
-  (-> app-routes
+  (-> (routes item-routes
+              common-routes)
       (wrap-simulated-methods)
       (wrap-params)
       (wrap-db)
@@ -29,8 +25,8 @@
 
 (defn -main [port]
   (migration/create-table db)
-  (run-server app {:port (Integer. port)}))
+  (run-server app-routes {:port (Integer. port)}))
 
 (defn -dev-main [port]
   (migration/create-table db)
-  (run-server (wrap-reload #'app) {:port (Integer. port)}))
+  (run-server (wrap-reload #'app-routes) {:port (Integer. port)}))

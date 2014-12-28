@@ -1,4 +1,4 @@
-(ns webdev.item.view
+(ns webdev.item.views
   (:require [hiccup.core :refer [h]]
             [hiccup.form :refer [form-to
                                  submit-button

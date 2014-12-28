@@ -1,4 +1,4 @@
-(ns webdev.item.model
+(ns webdev.item.models
   (:require [clojure.java.jdbc :as jdbc]
             [java-jdbc.sql :as sql]))
 

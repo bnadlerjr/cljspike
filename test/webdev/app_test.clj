@@ -1,7 +1,7 @@
-(ns webdev.core-test
+(ns webdev.app-test
   (:require [clojure.test :refer :all]
-            [webdev.core :refer [app]]
-            [webdev.item.migration :as migration]
+            [webdev.app :refer [app-routes]]
+            [webdev.item.migrations :as migration]
             [ring.mock.request :as mock]
             [environ.core :refer [env]]))
 
@@ -13,9 +13,9 @@
 
 (deftest routes
   (testing "/items"
-    (let [response (app (mock/request :get "/items"))]
+    (let [response (app-routes (mock/request :get "/items"))]
       (is (= 200 (:status response)))))
 
   (testing "not found"
-    (let [response (app (mock/request :get "/no-such-route"))]
+    (let [response (app-routes (mock/request :get "/no-such-route"))]
       (is (= 404 (:status response))))))

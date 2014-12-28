@@ -20,12 +20,12 @@
 
   :uberjar-name "webdev.jar"
 
-  :main webdev.core
+  :main webdev.app
 
   :profiles {
              :dev {
                    :env {:database-url "jdbc:postgresql://localhost/webdev"}
-                   :main webdev.core/-dev-main
+                   :main webdev.app/-dev-main
                    :dependencies [[ring/ring-mock "0.2.0"]]}
              :test {
                     :env {:database-url "jdbc:postgresql://localhost/webdev_test"}}}

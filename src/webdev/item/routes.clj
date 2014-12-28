@@ -1,6 +1,6 @@
 (ns webdev.item.routes
   (:require [compojure.core :refer [GET POST PUT DELETE routes]]
-            [webdev.item.handler :refer [handle-index-items
+            [webdev.item.handlers :refer [handle-index-items
                                          handle-create-item
                                          handle-delete-item
                                          handle-update-item]]))
