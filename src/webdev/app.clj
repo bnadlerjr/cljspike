@@ -1,7 +1,7 @@
 (ns webdev.app
   (:require [webdev.item.migrations :as migration]
-            [webdev.item.routes :refer [item-routes]]
-            [webdev.common.routes :refer [common-routes]]
+            [webdev.item.handlers :refer [item-routes]]
+            [webdev.common.handlers :refer [common-routes]]
             [webdev.common.middleware :refer [wrap-db
                                               wrap-simulated-methods]])
   (:require [org.httpkit.server :refer [run-server]]

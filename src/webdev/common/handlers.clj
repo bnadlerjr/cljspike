@@ -1,4 +1,4 @@
-(ns webdev.common.routes
+(ns webdev.common.handlers
   (:require [ring.handler.dump :refer [handle-dump]]
             [compojure.core :refer [ANY routes]]
             [compojure.route :refer [not-found]]))

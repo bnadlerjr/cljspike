@@ -1,5 +1,6 @@
 (ns webdev.item.handlers
   (:require [ring.util.response :refer [response not-found redirect]]
+            [compojure.core :refer [GET POST PUT DELETE defroutes]]
             [webdev.item.models :refer [create-item
                                        read-items
                                        update-item
@@ -34,3 +35,9 @@
     (if exists?
       (redirect "/items")
       (not-found "Item not found."))))
+
+(defroutes item-routes
+           (GET "/items" [] handle-index-items)
+           (POST "/items" [] handle-create-item)
+           (DELETE "/items/:item-id" [] handle-delete-item)
+           (PUT "/items/:item-id" [] handle-update-item))
