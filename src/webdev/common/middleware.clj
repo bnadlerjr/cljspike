@@ -1,11 +1,9 @@
 (ns webdev.common.middleware
   (:require [environ.core :refer [env]]))
 
-(def db (env :database-url))
-
 (defn wrap-db [hdlr]
   (fn [req]
-    (hdlr (assoc req :webdev/db db))))
+    (hdlr (assoc req :webdev/db (env :database-url)))))
 
 (def sim-methods {"PUT" :put "DELETE" :delete})
 
