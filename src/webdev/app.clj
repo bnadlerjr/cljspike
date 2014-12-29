@@ -10,7 +10,8 @@
             [ring.middleware.resource :refer [wrap-resource]]
             [ring.middleware.file-info :refer [wrap-file-info]]
             [compojure.core :refer [routes]]
-            [environ.core :refer [env]]))
+            [environ.core :refer [env]]
+            [prone.middleware :as prone]))
 
 (def db (env :database-url))
 
@@ -29,4 +30,6 @@
 
 (defn -dev-main [port]
   (migration/create-table db)
-  (run-server (wrap-reload #'app-routes) {:port (Integer. port)}))
+  (run-server
+    (prone/wrap-exceptions
+      (wrap-reload #'app-routes)) {:port (Integer. port)}))
