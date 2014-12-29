@@ -1,5 +1,6 @@
 (ns webdev.item.views
-  (:require [hiccup.core :refer [h]]
+  (:require [ring.util.anti-forgery :refer [anti-forgery-field]]
+            [hiccup.core :refer [h]]
             [hiccup.form :refer [form-to
                                  submit-button
                                  hidden-field
@@ -9,6 +10,7 @@
 
 (defn- update-item-form [id checked]
   (form-to [:put (str "/items/" id)]
+           (anti-forgery-field)
            (hidden-field "checked" (if checked "false" "true"))
            [:div.btn-group
             (submit-button
@@ -16,12 +18,13 @@
 
 (defn- delete-item-form [id]
   (form-to [:delete (str "/items/" id)]
+           (anti-forgery-field)
            [:div.btn-group
             (submit-button {:class "btn btn-danger btn-xs"} "Delete")]))
 
 (defn- new-item-form []
   (form-to {:class "form-horizontal"} [:post "/items"]
-
+           (anti-forgery-field)
            [:div.form-group
             (label {:class "control-label col-sm-2"} "name-input" "Name")
             [:div.col-sm-10

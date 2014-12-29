@@ -1,5 +1,8 @@
 (ns webdev.item.handlers
-  (:require [ring.util.response :refer [response not-found redirect]]
+  (:require [ring.util.response :refer [response
+                                        not-found
+                                        redirect
+                                        content-type]]
             [compojure.core :refer [GET POST PUT DELETE defroutes]]
             [webdev.item.models :refer [create-item
                                        read-items
@@ -7,34 +10,40 @@
                                        delete-item]]
             [webdev.item.views :refer [items-page]]))
 
+(def html-content-type "text/html; charset=utf-8")
+
 (defn handle-index-items [req]
   (let [db (:webdev/db req)
         items (read-items db)]
-    (response (items-page items))))
+    (content-type (response (items-page items))
+                  html-content-type)))
 
 (defn handle-create-item [req]
-  (let [name (get-in req [:params "name"])
-        description (get-in req [:params "description"])
+  (let [name (get-in req [:params :name])
+        description (get-in req [:params :description])
         db (:webdev/db req)]
     (create-item db name description)
-    (redirect "/items")))
+    (content-type (redirect "/items")
+                  html-content-type)))
 
 (defn handle-delete-item [req]
   (let [db (:webdev/db req)
         item-id (java.util.UUID/fromString (:item-id (:route-params req)))
         exists? (delete-item db item-id)]
-    (if exists?
-      (redirect "/items")
-      (not-found "Item not found."))))
+    (content-type (if exists?
+                    (redirect "/items")
+                    (not-found "Item not found."))
+                  html-content-type)))
 
 (defn handle-update-item [req]
   (let [db (:webdev/db req)
         item-id (java.util.UUID/fromString (:item-id (:route-params req)))
-        checked (get-in req [:params "checked"])
+        checked (get-in req [:params :checked])
         exists? (update-item db item-id (= "true" checked))]
-    (if exists?
-      (redirect "/items")
-      (not-found "Item not found."))))
+    (content-type (if exists?
+                    (redirect "/items")
+                    (not-found "Item not found."))
+                  html-content-type)))
 
 (defroutes item-routes
            (GET "/items" [] handle-index-items)

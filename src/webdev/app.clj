@@ -5,31 +5,31 @@
             [webdev.common.middleware :refer [wrap-db
                                               wrap-simulated-methods]])
   (:require [org.httpkit.server :refer [run-server]]
+            [ring.middleware.defaults :refer [wrap-defaults site-defaults]]
             [ring.middleware.reload :refer [wrap-reload]]
-            [ring.middleware.params :refer [wrap-params]]
-            [ring.middleware.resource :refer [wrap-resource]]
-            [ring.middleware.file-info :refer [wrap-file-info]]
             [compojure.core :refer [routes]]
             [environ.core :refer [env]]
             [prone.middleware :as prone]))
 
 (def db (env :database-url))
 
-(def app-routes
-  (-> (routes item-routes
-              common-routes)
+(def application-defaults
+  (assoc-in site-defaults [:static :resources] "static"))
+
+(def application
+  (-> (routes
+        item-routes
+        common-routes)
       (wrap-simulated-methods)
-      (wrap-params)
       (wrap-db)
-      (wrap-resource "static")
-      (wrap-file-info)))
+      (wrap-defaults application-defaults)))
 
 (defn -main [port]
   (migration/create-table db)
-  (run-server app-routes {:port (Integer. port)}))
+  (run-server application {:port (Integer. port)}))
 
 (defn -dev-main [port]
   (migration/create-table db)
   (run-server
     (prone/wrap-exceptions
-      (wrap-reload #'app-routes)) {:port (Integer. port)}))
+      (wrap-reload #'application)) {:port (Integer. port)}))
