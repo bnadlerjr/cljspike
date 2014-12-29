@@ -2,8 +2,7 @@
   (:require [clojure.test :refer :all]
             [webdev.item.handlers :refer [item-routes]]
             [ring.mock.request :as mock]
-            [environ.core :refer [env]]
-            [clojure.java.jdbc :as jdbc]))
+            [environ.core :refer [env]]))
 
 (def fake-uuid "cf966956-e0c9-480f-9e6c-79f890f1d3af")
 
