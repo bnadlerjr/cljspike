@@ -9,27 +9,23 @@
             [ring.middleware.reload :refer [wrap-reload]]
             [compojure.core :refer [routes]]
             [environ.core :refer [env]]
-            [prone.middleware :as prone]))
+            [prone.middleware :refer [wrap-exceptions]]))
 
-(def db (env :database-url))
+(def debug-mode? (env :debug false))
 
 (def application-defaults
   (assoc-in site-defaults [:static :resources] "static"))
 
 (def application
-  (-> (routes
-        item-routes
-        common-routes)
-      (wrap-simulated-methods)
-      (wrap-db)
-      (wrap-defaults application-defaults)))
+  (wrap-defaults
+    (cond->
+      (routes item-routes common-routes)
+      wrap-simulated-methods
+      wrap-db
+      debug-mode? wrap-exceptions
+      debug-mode? wrap-reload)
+    application-defaults))
 
 (defn -main [port]
-  (migration/create-table db)
+  (migration/create-table (env :database-url))
   (run-server application {:port (Integer. port)}))
-
-(defn -dev-main [port]
-  (migration/create-table db)
-  (run-server
-    (prone/wrap-exceptions
-      (wrap-reload #'application)) {:port (Integer. port)}))

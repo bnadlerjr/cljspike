@@ -27,7 +27,6 @@
              :dev {
                    :env {:database-url "jdbc:postgresql://localhost/webdev"
                          :debug true}
-                   :main webdev.app/-dev-main
                    :dependencies [[ring/ring-mock "0.2.0"]
                                   [prone "0.8.0"]]}
              :test {
